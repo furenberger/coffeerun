@@ -20,10 +20,14 @@
     Truck.prototype.printOrders = function(){
         var customerIdArray = Object.keys(this.db.getAll());
 
-        console.log('Truck #' + this.truckId + ' has pending orders');
-        customerIdArray.forEach(function(id){
-           console.log(this.db.get(id));
-        }.bind(this));
+        if(customerIdArray.length > 0) {
+            console.log('Truck #' + this.truckId + ' has pending orders');
+            customerIdArray.forEach(function (id) {
+                console.log(this.db.get(id));
+            }.bind(this));
+        }else{
+            console.log('Truck #' + this.truckId + ' is empty.  Get to work people!');
+        }
     };
 
     App.Truck = Truck;

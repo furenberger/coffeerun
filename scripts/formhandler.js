@@ -11,8 +11,8 @@
             throw new Error('No selector provided');
         }
 
-        this.$rangeElement = $(selector);
-        if (this.$rangeElement.length === 0) {
+        this.$formElement = $(selector);
+        if (this.$formElement.length === 0) {
             throw new Error('Could not find element with selector: ' + selector);
         }
     }
@@ -24,7 +24,7 @@
             throw new Error('No fn provided');
         }
 
-        this.$rangeElement.on('submit', function (event) {
+        this.$formElement.on('submit', function (event) {
             event.preventDefault();
 
             var data = {};
@@ -39,6 +39,37 @@
             this.elements[0].focus();
         });
     };
+
+    FormHandler.prototype.addInputHandler = function(fn){
+        console.log('Setting input handler for form');
+        this.$formElement.on('input', '[name="emailAddress"]', function(event){
+            var emailAddress = event.target.value;
+            console.log(fn(emailAddress));
+            var message = '';
+            if(fn(emailAddress)){
+                event.target.setCustomValidity('');
+            }else{
+                message = emailAddress + ' is not an authorized email address! DO NOT PASS GO, DO NOT GET $200';
+                event.target.setCustomValidity(message);
+            }
+        });
+    };
+
+    FormHandler.prototype.addDecafHandler = function(fn){
+        console.log('Setting strength handler for form');
+        this.$formElement.on('input', {coffee:'[name="coffee"]', strength:'[name="strength"]'}, function(event){
+            var $coffee = $(event.data.coffee);
+            var $strength = $(event.data.strength);
+            var message = '';
+            if(fn($coffee.val(), $strength.val())){
+                event.target.setCustomValidity('');
+            }else{
+                message = ' I dont think you know what decaf means...';
+                event.target.setCustomValidity(message);
+            }
+        });
+    };
+
 
     App.FormHandler = FormHandler;
     window.App = App;

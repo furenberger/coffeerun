@@ -32,6 +32,8 @@
     };
 
     function strengthChange(value){
+        $('#strengthValue').removeClass();
+
         if(value <= 25){
             $('#strengthValue').removeClass();
         }else if(value > 25 && value <= 50){
